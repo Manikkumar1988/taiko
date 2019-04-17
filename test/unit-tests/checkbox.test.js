@@ -1,7 +1,7 @@
-let { openBrowser, goto, radioButton, closeBrowser, evaluate, $, intervalSecs, timeoutSecs } = require('../../lib/taiko');
 let { createHtml, removeFile, openBrowserArgs } = require('./test-util');
+let { openBrowser, goto, checkBox, closeBrowser, evaluate, $, intervalSecs, timeoutSecs } = require('../../lib/taiko');
 
-describe('radio button', () => {
+describe('checkbox button', () => {
     beforeAll(async () => {
         await openBrowser(openBrowserArgs);
     }, 10000);
@@ -14,9 +14,9 @@ describe('radio button', () => {
         let filePath;
         beforeAll(() => {
             let innerHtml = '<form>' +
-                '<input type="radio" name="color" value="red" checked>Red</input>' +
-                '<input type="radio" name="color" value="yellow">Yellow</input>' +
-                '<input type="radio" name="color" value="green">Green</input>' +
+                '<input type="checkbox" name="color" value="red">Red</input>' +
+                '<input type="checkbox" name="color" value="yellow">Yellow</input>' +
+                '<input type="checkbox" name="color" value="green">Green</input>' +
                 '</form>';
             filePath = createHtml(innerHtml);
         });
@@ -30,24 +30,26 @@ describe('radio button', () => {
         });
 
         test('test exists()', async () => {
-            await expect(radioButton('Yellow').exists()).resolves.toBeTruthy();
-            await expect(radioButton('Brown').exists(intervalSecs(0), timeoutSecs(0))).resolves.toBeFalsy();
+            await expect(checkBox('Yellow').exists()).resolves.toBeTruthy();
+            await expect(checkBox('Brown').exists(intervalSecs(0), timeoutSecs(0))).resolves.toBeFalsy();
         });
 
-        test('test select()', async () => {
-            await radioButton('Green').select();
+        test('test check()', async () => {
+            await checkBox('Green').check();
             let value = await evaluate($('input[name=color]:checked'), (element) => element.value);
             expect(value.result).toBe('green');
         });
 
-        test('test deselect()', async () => {
-            await radioButton('Red').deselect();
+        test('test uncheck()', async () => {
+            await checkBox('Red').check();
+            await checkBox('Red').uncheck();
             let value = await evaluate($('input[value=red]'), (element) => element.checked);
             await expect(value.result).toBeFalsy();
         });
 
-        test('test isSelected()', async () => {
-            await expect(radioButton('Red').isSelected()).resolves.toBeTruthy();
+        test('test isChecked()', async () => {
+            await checkBox('Red').check();
+            await expect(checkBox('Red').isChecked()).resolves.toBeTruthy();
         });
     });
 
@@ -56,15 +58,15 @@ describe('radio button', () => {
         beforeAll(() => {
             let innerHtml = '<form>' +
                 '<label>' +
-                '<input name="color" type="radio" value="red" checked />' +
+                '<input name="color" type="checkbox" value="red" />' +
                 '<span>Red</span>' +
                 '</label>' +
                 '<label>' +
-                '<input name="color" type="radio" value="yellow" />' +
+                '<input name="color" type="checkbox" value="yellow" />' +
                 '<span>Yellow</span>' +
                 '</label>' +
                 '<label>' +
-                '<input name="color" type="radio" value="green" />' +
+                '<input name="color" type="checkbox" value="green" />' +
                 '<span>Green</span>' +
                 '</label>' +
                 '</form>';
@@ -80,8 +82,8 @@ describe('radio button', () => {
         });
 
         test('test exists()', async () => {
-            await expect(radioButton('Green').exists()).resolves.toBeTruthy();
-            await expect(radioButton('Brown').exists(intervalSecs(0), timeoutSecs(0))).resolves.toBeFalsy();
+            await expect(checkBox('Green').exists()).resolves.toBeTruthy();
+            await expect(checkBox('Brown').exists(intervalSecs(0), timeoutSecs(0))).resolves.toBeFalsy();
         });
     });
 
@@ -90,15 +92,15 @@ describe('radio button', () => {
         beforeAll(() => {
             let innerHtml = '<form>' +
                 '<p>' +
-                '<input id="c1" name="color" type="radio" value="red" checked />' +
+                '<input id="c1" name="color" type="checkbox" value="red" />' +
                 '<label for="c1">Red</label>' +
                 '</p>' +
                 '<p>' +
                 '<label for="c2">Yellow</label>' +
-                '<input id="c2" name="color" type="radio" value="yellow" />' +
+                '<input id="c2" name="color" type="checkbox" value="yellow" />' +
                 '</p>' +
                 '<p>' +
-                '<label for="c3"><input id="c3" name="color" type="radio" value="green" />Green</label>' +
+                '<label for="c3"><input id="c3" name="color" type="checkbox" value="green" />Green</label>' +
                 '</p>' +
                 '</form>';
             filePath = createHtml(innerHtml);
@@ -113,10 +115,10 @@ describe('radio button', () => {
         });
 
         test('test exists()', async () => {
-            await expect(radioButton('Red').exists()).resolves.toBeTruthy();
-            await expect(radioButton('Yellow').exists()).resolves.toBeTruthy();
-            await expect(radioButton('Green').exists()).resolves.toBeTruthy();
-            await expect(radioButton('Brown').exists(intervalSecs(0), timeoutSecs(0))).resolves.toBeFalsy();
+            await expect(checkBox('Red').exists()).resolves.toBeTruthy();
+            await expect(checkBox('Yellow').exists()).resolves.toBeTruthy();
+            await expect(checkBox('Green').exists()).resolves.toBeTruthy();
+            await expect(checkBox('Brown').exists(intervalSecs(0), timeoutSecs(0))).resolves.toBeFalsy();
         });
     });
 });
