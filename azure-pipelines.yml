@@ -46,6 +46,10 @@ jobs:
   - script:    
       npm run test-functional
 
+  - script:
+      bash <(curl -s https://codecov.io/bash) -t 753f6a69-d2fc-4d80-95df-d729150c4176
+
+
 - job: Windows
   pool:
     vmImage: 'vs2017-win2016'
