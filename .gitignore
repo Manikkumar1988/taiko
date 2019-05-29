@@ -61,6 +61,8 @@ typings/
 docs/site
 docs/api.md
 docs/index.md
+docs/layout/partials/content.html
+docs/layout/assets/js/docSearch.js
 
 #local chromium
 .local-chromium

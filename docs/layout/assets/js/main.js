@@ -1,5 +1,6 @@
 $(document).ready(function() {
   init();
+  algoliaSearch();
   setTimeout(function(){
     onLoad();
   },100);
@@ -151,21 +152,12 @@ function smoothScroll() {
   }); 
 }
 
-function alogoliaSearch() {
-  docsearch({ 
-    apiKey: 'b36d75c493b44a8f2605db66708a283b', 
-    indexName: 'taiko', 
-    inputSelector: '#search', 
-    debug: false // Set debug to true if you want to inspect the dropdown 
-    }); 
-}
-
 function headButtresolve(element) {
   $(element).prepend('<span class="headbutt_blocker"></span>')
 }
 
 function updateDollarLink() {
-    let link = document.getElementById('$');
+    let link = document.evaluate('//h2[string() = "$"]', document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
     link.id = 'dollar';
     link.children[1].setAttribute('href', '#dollar');
 
@@ -188,11 +180,13 @@ function onLoad(){
 }
 
 function init() {
+  document.querySelectorAll('div.content-section pre').forEach((block) => {
+    hljs.highlightBlock(block);
+  });
   setGithubStar();
   setTimeout(function(){
     smoothScroll();
   }, 100);
-  alogoliaSearch();
   appendLink($('.main-content h2'));
   appendLink($('.main-content h3'));
   headButtresolve($('.banner-heading'));
